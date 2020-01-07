@@ -20,6 +20,8 @@ $(error Environment variable BOLOS_SDK is not set)
 endif
 include $(BOLOS_SDK)/Makefile.defines
 
+TARGET_ID = 0x31100004
+
 APP_PATH = ""
 # All but bitcoin app use dependency onto the bitcoin app/lib
 DEFINES_LIB = USE_LIB_BITCOIN
@@ -33,7 +35,7 @@ APP_LOAD_FLAGS=--appFlags 0x250 --dep Bitcoin:$(APPVERSION)
 
 # simplify for tests
 ifndef COIN
-COIN=bitcoin
+COIN=chipo
 endif
 
 ifeq ($(COIN),bitcoin_testnet)
@@ -105,6 +107,11 @@ else ifeq ($(COIN),pivx)
 DEFINES   += COIN_P2PKH_VERSION=30 COIN_P2SH_VERSION=13 COIN_FAMILY=1 COIN_COINID=\"DarkNet\" COIN_COINID_HEADER=\"PIVX\" COIN_COLOR_HDR=0x46385D COIN_COLOR_DB=0x9E96AA COIN_COINID_NAME=\"PivX\" COIN_COINID_SHORT=\"PIV\" COIN_KIND=COIN_KIND_PIVX
 APPNAME ="PivX"
 APP_LOAD_PARAMS += --path $(APP_PATH)
+else ifeq ($(COIN),chipo)
+# Chipo
+DEFINES   += COIN_P2PKH_VERSION=28 COIN_P2SH_VERSION=13 COIN_FAMILY=1 COIN_COINID=\"Chipo\" COIN_COINID_HEADER=\"ICU\" COIN_COLOR_HDR=0xFF9900 COIN_COLOR_DB=0x9E96BB COIN_COINID_NAME=\"Chipo\" COIN_COINID_SHORT=\"ICU\" COIN_KIND=COIN_KIND_CHIPO
+APPNAME ="Chipo"
+APP_LOAD_PARAMS += --path $(APP_PATH)
 else ifeq ($(COIN),stealth)
 # Stealth
 DEFINES   += COIN_P2PKH_VERSION=62 COIN_P2SH_VERSION=85 COIN_FAMILY=4 COIN_COINID=\"Stealth\" COIN_COINID_HEADER=\"STEALTH\" COIN_COLOR_HDR=0x000000 COIN_COLOR_DB=0x808080 COIN_COINID_NAME=\"Stealth\" COIN_COINID_SHORT=\"XST\" COIN_KIND=COIN_KIND_STEALTH COIN_FLAGS=FLAG_PEERCOIN_UNITS\|FLAG_PEERCOIN_SUPPORT
@@ -170,7 +177,7 @@ APPNAME ="Resistance"
 APP_LOAD_PARAMS += --path $(APP_PATH)
 else
 ifeq ($(filter clean,$(MAKECMDGOALS)),)
-$(error Unsupported COIN - use bitcoin_testnet, bitcoin, bitcoin_cash, bitcoin_gold, litecoin, dogecoin, dash, zcash, horizen, komodo, stratis, peercoin, pivx, viacoin, vertcoin, stealth, digibyte, qtum, bitcoin_private, zcoin, gamecredits, zclassic, xsn, nix, lbry, resistance)
+$(error Unsupported COIN - use bitcoin_testnet, bitcoin, bitcoin_cash, bitcoin_gold, litecoin, dogecoin, dash, zcash, horizen, komodo, stratis, peercoin, pivx, viacoin, vertcoin, stealth, digibyte, qtum, bitcoin_private, zcoin, gamecredits, zclassic, xsn, nix, lbry, resistance, chipo)
 endif
 endif
 
@@ -204,7 +211,7 @@ DEFINES   += LEDGER_MAJOR_VERSION=$(APPVERSION_M) LEDGER_MINOR_VERSION=$(APPVERS
 
 # U2F
 DEFINES   += HAVE_U2F HAVE_IO_U2F
-DEFINES   += U2F_PROXY_MAGIC=\"BTC\"
+DEFINES   += U2F_PROXY_MAGIC=\"ICU\"
 DEFINES   += USB_SEGMENT_SIZE=64
 DEFINES   += BLE_SEGMENT_SIZE=32 #max MTU, min 20
 
